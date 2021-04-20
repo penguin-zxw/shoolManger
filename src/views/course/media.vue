@@ -80,7 +80,7 @@
           <el-button
             size="mini"
             type="primary"
-            @click="handleEdit(scope.$index, scope.row)"
+             @click="handleUpdate(scope.row)"
             >编辑</el-button
           >
           <el-button
@@ -128,6 +128,7 @@
         <el-form-item label="封面">
           <div class="editor-container">
             <dropzone
+              v-model="temp.cover"
               id="myVueDropzone"
               url="https://httpbin.org/post"
               @dropzone-removedFile="dropzoneR"
@@ -136,13 +137,13 @@
           </div>
         </el-form-item>
         <el-form-item label="试看内容" prop="trySee">
-          <tinymce :width="600" :height="300" />
+          <tinymce v-model="temp.try" :width="600" :height="300" />
         </el-form-item>
         <el-form-item label="课程内容">
-          <tinymce :width="600" :height="300" />
+          <tinymce v-model="temp.content" :width="600" :height="300" />
         </el-form-item>
         <el-form-item label="课程价格">
-          <el-input-number v-model="num" :min="1" :max="10"></el-input-number>
+          <el-input-number v-model="temp.price"></el-input-number>
         </el-form-item>
         <el-form-item label="Status">
            <el-radio-group v-model="temp.status">
@@ -155,7 +156,7 @@
         <el-button @click="dialogFormVisible = false"> 取消 </el-button>
         <el-button
           type="primary"
-          
+          @click="dialogStatus==='create'?createData():updateData()"
         >
           提交
         </el-button>
@@ -210,12 +211,13 @@ export default {
       },
       statusOptions: [0, 1],
       temp: {
-        id: undefined,
-        importance: 1,
-        remark: "",
-        timestamp: new Date(),
+        id: '',
         title: "",
-        type: "",
+        cover: "",
+        try:'',
+        content:'',
+        price:'0',
+        sub_count:'',
         status: 0,
       },
       dialogFormVisible: false,
@@ -224,7 +226,6 @@ export default {
         update: "Edit",
         create: "Create",
       },
-      num: 1,
       rules: {
         title: [{ required: true, message: "标题不能为空", trigger: "blur" }],
         
@@ -309,6 +310,44 @@ export default {
       console.log(file);
       this.$message({ message: "Delete success", type: "success" });
     },
+    //新增数据
+    createData(){
+        createMedia(this.listQuery).then((response) => {
+            // console.log(response);
+            if (response.code === 20000) {
+                this.dialogFormVisible = false
+                this.$notify({
+                title: 'Success',
+                message: '新增成功',
+                type: 'success',
+                duration: 2000
+                })
+            }
+      });
+    },
+    //编辑
+    updateData(){
+        updateMedia(this.listQuery).then((response) => {
+        console.log(response);
+        if (response.code === 20000) {
+            this.dialogFormVisible = false
+            this.$notify({
+              title: 'Success',
+              message: '添加成功',
+              type: 'success',
+              duration: 2000
+            })
+        }
+      });
+    },
+    handleUpdate(row){
+      this.temp = Object.assign({}, row)
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    }
   },
 };
 </script>
