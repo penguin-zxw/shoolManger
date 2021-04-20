@@ -21,12 +21,14 @@
         <el-table
             :data="list"
             border
-            :default-sort = "{prop: 'id', order: 'descending'}"
+            fit
+            highlight-current-row
+            @sort-change="sortChange"
             style="width: 100%;">
             <el-table-column
                 prop="id"
-                sortable
                 label="ID"
+                sortable
                 width="80"
                 align="center">
             </el-table-column>
@@ -65,14 +67,25 @@
                 width="150">
             </el-table-column>
             <el-table-column label="操作" align="center" width="250">
-                <template>
+                <template slot-scope="scope">
                     <el-button
                         size="mini"
+                        type="primary"
+                        @click="handleEdit(scope.$index, scope.row)"
                         >编辑</el-button>
                     <el-button
                         size="mini"
-                        type="danger"
-                        >删除</el-button>
+                        :type="scope.row.status===1?'':'success'"
+                        @click="handleChangeStatus(scope.row)"
+                        >{{scope.row.status===1?'下架':'上架'}}</el-button>
+                    <el-popconfirm
+                        title="这是一段内容确定删除吗？"
+                        style="margin-left:10px"
+                        @onConfirm="handleDelete(scope.$index, scope.row)"
+                    >
+                        <el-button slot="reference" size="mini" type="danger">删除</el-button>
+                    </el-popconfirm>
+                    
                 </template>
             </el-table-column>
         </el-table>
@@ -82,7 +95,10 @@
 <script>
 import Pagination from '@/components/Pagination'
 import {
-    fetchList
+    fetchList,
+    createMedia,
+    updateMedia,
+    deleteMedia
 } from '@/api/media'
 export default {
     name:"media",
@@ -109,12 +125,64 @@ export default {
         this.getList()
     },
     methods:{
+        handleFilter() {
+            this.listQuery.page = 1
+            this.getList()
+        },
+        sortChange(data) {
+            const { prop, order } = data
+            if (prop === 'id') {
+                this.sortByID(order)
+            }
+        },
+        sortByID(order) {
+            if (order === 'ascending') {
+                this.listQuery.sort = '+id'
+            } else {
+                this.listQuery.sort = '-id'
+            }
+            this.handleFilter()
+        },
         //获取表格内容
         getList(){
             fetchList(this.listQuery).then(response => {
                 // console.log(response);
                 this.list = response.data.items
                 this.total = response.data.total
+            })
+        },
+        handleEdit(index, row) {
+            console.log(index, row);
+        },
+        //上架下架
+        handleChangeStatus(row){
+            if(row.status===0){
+                row.status=1
+                this.$message({
+                    message: '商品已上架',
+                    type: 'success'
+                });
+            }else if(row.status===1){
+                row.status=0
+                this.$message({
+                    message: '商品已下架',
+                    type: 'success'
+                });
+            }
+        },
+        //删除
+        handleDelete(index,row){
+            deleteMedia(row.id).then(response=>{
+                console.log(response);
+                if(response.code===20000){
+                    this.$notify({
+                        title: 'Success',
+                        message: '删除成功',
+                        type: 'success',
+                        duration: 2000
+                    })
+                    this.list.splice(index, 1)
+                }
             })
         }
     }
