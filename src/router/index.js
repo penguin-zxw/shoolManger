@@ -178,7 +178,7 @@ export const asyncRoutes = [
     name: 'Course',
     meta: {
       title: '课程',
-      icon: 'lock',
+      icon: 'excel',
     },
     children: [
       {
