@@ -19,42 +19,71 @@
         
         <!-- 表格 -->
         <el-table
-            :data="tableData"
+            :data="list"
             border
-            :default-sort = "{prop: 'date', order: 'descending'}"
-            style="width: 100%">
+            :default-sort = "{prop: 'id', order: 'descending'}"
+            style="width: 100%;">
             <el-table-column
-                prop="date"
+                prop="id"
                 sortable
-                label="日期"
-                width="180">
+                label="ID"
+                width="80"
+                align="center">
             </el-table-column>
             <el-table-column
-                prop="name"
-                label="姓名"
-                width="180">
-            </el-table-column>
-            <el-table-column
-                prop="address"
-                label="地址">
-            </el-table-column>
-            <el-table-column label="操作">
+                label="图文内容">
                 <template slot-scope="scope">
+                    <div style="display:flex;flex-direction:row">
+                        <img style="height:50px" :src='scope.row.cover' alt="">
+                        <div style="margin-left:10px">
+                            <span>{{scope.row.title}}</span><br>
+                            <span style="color:red">￥{{scope.row.price}}</span>
+                        </div>
+                    </div>   
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="sub_count"
+                label="订阅量"
+                align="center"
+                width="100">
+            </el-table-column>
+            <el-table-column
+                label="状态"
+                align="center"
+                width="100">
+                <template slot-scope="scope">
+                    <el-tag :type="scope.row.status===1?'success':'danger'">
+                        {{scope.row.status===0?'已下架':'已上架'}}
+                    </el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="created_time"
+                label="创建时间"
+                align="center"
+                width="150">
+            </el-table-column>
+            <el-table-column label="操作" align="center" width="250">
+                <template>
                     <el-button
                         size="mini"
-                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        >编辑</el-button>
                     <el-button
                         size="mini"
                         type="danger"
-                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                        >删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
-        <pagination :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" />
+        <pagination :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList"/>
     </div>
 </template>
 <script>
 import Pagination from '@/components/Pagination'
+import {
+    fetchList
+} from '@/api/media'
 export default {
     name:"media",
     components: { Pagination },
@@ -68,29 +97,26 @@ export default {
           label: '双皮奶'
         }],
         value: '',
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }],
+        list:null,//表格数据
         total: 0,
         listQuery: {
             page: 1,
             limit: 20
         }
       }
+    },
+    created() {
+        this.getList()
+    },
+    methods:{
+        //获取表格内容
+        getList(){
+            fetchList(this.listQuery).then(response => {
+                // console.log(response);
+                this.list = response.data.items
+                this.total = response.data.total
+            })
+        }
     }
 }
 </script>
