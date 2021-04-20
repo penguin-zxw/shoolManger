@@ -12,8 +12,8 @@
                         :value="item.value">
                     </el-option>
                 </el-select>
-                <el-input placeholder="标题" style="width:200px"></el-input>
-                <el-button type="primary" icon="el-icon-search">搜索</el-button>
+                <el-input v-model="listQuery.title" @keyup.enter.native="handleFilter" placeholder="标题" style="width:200px"></el-input>
+                <el-button type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
             </div>
         </div>
         
@@ -107,10 +107,10 @@ export default {
       return {
         options: [{
           value: '选项1',
-          label: '黄金糕'
+          label: '已上架'
         }, {
           value: '选项2',
-          label: '双皮奶'
+          label: '已下架'
         }],
         value: '',
         list:null,//表格数据
@@ -184,6 +184,10 @@ export default {
                     this.list.splice(index, 1)
                 }
             })
+        },
+        //搜索
+        handleSearch(title){
+
         }
     }
 }
