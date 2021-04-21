@@ -140,7 +140,7 @@
           <tinymce v-model="temp.try" :width="600" :height="300" />
         </el-form-item>
         <el-form-item label="课程内容">
-          <tinymce v-model="temp.content" :width="600" :height="300" />
+          
         </el-form-item>
         <el-form-item label="课程价格">
           <el-input-number v-model="temp.price"></el-input-number>

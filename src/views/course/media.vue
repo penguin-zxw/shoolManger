@@ -284,8 +284,7 @@ export default {
     //删除
     handleDelete(index, row) {
       deleteMedia(row.id).then((response) => {
-        console.log(response);
-        if (response.code === 20000) {
+        // console.log(response);
           this.$notify({
             title: "Success",
             message: "删除成功",
@@ -293,7 +292,6 @@ export default {
             duration: 2000,
           });
           this.list.splice(index, 1);
-        }
       });
     },
     //添加

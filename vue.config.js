@@ -34,7 +34,7 @@ module.exports = {
     open: true,
     overlay: {
       warnings: false,
-      errors: true
+      errors: false
     },
     before: require('./mock/mock-server.js')
   },
@@ -88,7 +88,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()

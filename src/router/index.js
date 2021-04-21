@@ -213,6 +213,13 @@ export const asyncRoutes = [
           title: '专栏',
         }
       },
+      {
+        path: 'column_detail/:id',
+        component: () => import('@/views/course/columnDetail'),
+        name: 'columnDetail',
+        meta: { title: '专栏详情'},
+        hidden: true
+      },
     ]
   },
   {
@@ -428,7 +435,7 @@ export const asyncRoutes = [
   }, */
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
