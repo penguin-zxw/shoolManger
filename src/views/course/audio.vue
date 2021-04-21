@@ -265,7 +265,7 @@ export default {
     },
     //删除
     handleDelete(index, row) {
-      deleteMedia(row.id).then((response) => {
+      deleteAudio(row.id).then((response) => {
         console.log(response);
         if (response.code === 20000) {
           this.$notify({
@@ -294,7 +294,7 @@ export default {
     },
     //新增数据
     createData(){
-        createMedia(this.listQuery).then((response) => {
+        createAudio(this.listQuery).then((response) => {
             // console.log(response);
             if (response.code === 20000) {
                 this.dialogFormVisible = false
@@ -309,7 +309,7 @@ export default {
     },
     //编辑
     updateData(){
-        updateMedia(this.listQuery).then((response) => {
+        updateAudio(this.listQuery).then((response) => {
         console.log(response);
         if (response.code === 20000) {
             this.dialogFormVisible = false

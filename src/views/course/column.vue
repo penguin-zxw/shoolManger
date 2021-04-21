@@ -1,8 +1,10 @@
 <template>
-    <div>专栏</div>
+  <div class="container">专栏</div>
 </template>
 <script>
-export default {
-    
-}
 </script>
+<style scoped>
+.container {
+  padding: 20px;
+}
+</style>
