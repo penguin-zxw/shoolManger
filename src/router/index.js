@@ -79,7 +79,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: { title: '概览', icon: 'dashboard', affix: true }
       }
     ]
   },
@@ -232,6 +232,79 @@ export const asyncRoutes = [
         name: 'user',
         meta: { title: '用户', icon: 'user', noCache: true }
       }
+    ]
+  },
+  {
+    path: '/pay',
+    component: Layout,
+    redirect: '/pay/order',
+    alwaysShow: true, // will always show the root menu
+    name: 'Pay',
+    meta: {
+      title: '交易',
+      icon: 'education',
+    },
+    children: [
+      {
+        path: 'order',
+        component: () => import('@/views/pay/order'),
+        name: 'Order',
+        meta: {
+          title: '订单管理',
+        }
+      },
+      {
+        path: 'assets',
+        component: () => import('@/views/pay/assets'),
+        name: 'Assets',
+        meta: {
+          title: '资产管理',
+        }
+      },
+      {
+        path: 'payment',
+        component: () => import('@/views/pay/payment'),
+        name: 'Payment',
+        meta: {
+          title: '支付设置',
+        }
+      }
+    ]
+  },
+  {
+    path: '/renovation',
+    component: Layout,
+    redirect: '/renovation/mobile_index',
+    alwaysShow: true, // will always show the root menu
+    name: 'Renovation',
+    meta: {
+      title: '可视化',
+      icon: 'education',
+    },
+    children: [
+      {
+        path: 'mobile_index',
+        component: () => import('@/views/renovation/mobile/mobile'),
+        name: 'MobileIndex',
+        meta: {
+          title: '移动端',
+        }
+      },
+      {
+        path: 'mobile_edit',
+        component: () => import('@/views/renovation/mobile/edit'),
+        name: 'MobileEdit',
+        meta: { title: '移动端装修' },
+        hidden: true
+      },
+      {
+        path: 'pc_index',
+        component: () => import('@/views/renovation/pc/pc'),
+        name: 'PcIndex',
+        meta: {
+          title: 'PC端',
+        }
+      },
     ]
   },
   {

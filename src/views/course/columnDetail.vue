@@ -220,9 +220,6 @@ export default {
   color: #fff!important;
   background: #42b983!important;
 }
-</style>
-
-<style scoped>
 .icon-star{
   margin-right:2px;
 }
